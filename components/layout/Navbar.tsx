@@ -2,9 +2,22 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+
+import { Menu, X, ShoppingBag } from "lucide-react";
+
+import { useCartStore } from "@/lib/store/cartStore";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const items = useCartStore((state) => state.items);
+
+  const totalQuantity = items.reduce(
+    (total, item) => total + item.quantity,
+    0
+  );
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,41 +29,213 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [menuOpen]);
+
   return (
-    <header
-      className={`fixed left-0 top-0 z-50 w-full transition-all duration-500 ${
-        scrolled
-          ? "bg-black/80 backdrop-blur-md border-b border-white/10"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="mx-auto flex max-w-[1600px] items-center justify-between px-10 py-6">
-        <Image
-          src="/logo/logow.svg"
-          alt="NOISE"
-          width={140}
-          height={40}
-          className="h-auto w-28"
+    <>
+      <header
+        className={`fixed left-0 top-0 z-50 w-full transition-all duration-500 ${
+          scrolled
+            ? "border-b border-white/10 bg-black/80 backdrop-blur-md"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="mx-auto flex max-w-[1600px] items-center justify-between px-5 py-5 md:px-8 lg:px-10 lg:py-6">
+
+          {/* Logo */}
+
+          <Link href="/">
+            <Image
+              src="/logo/logow.svg"
+              alt="NOISE"
+              width={140}
+              height={40}
+              className="h-auto w-24 md:w-28"
+            />
+          </Link>
+
+          {/* Desktop Navigation */}
+
+          <nav className="hidden items-center gap-8 text-xs uppercase tracking-[0.3em] text-white md:flex">
+
+            <Link
+              href="/shop"
+              className="transition hover:text-zinc-400"
+            >
+              Shop
+            </Link>
+
+            <a
+              href="#lookbook"
+              className="transition hover:text-zinc-400"
+            >
+              Lookbook
+            </a>
+
+            <a
+              href="#about"
+              className="transition hover:text-zinc-400"
+            >
+              About
+            </a>
+
+            <Link
+              href="/cart"
+              className="relative transition hover:text-zinc-400"
+            >
+              <ShoppingBag size={20} />
+
+              {totalQuantity > 0 && (
+                <span className="absolute -right-3 -top-3 flex h-5 w-5 items-center justify-center rounded-full bg-white text-[10px] font-bold text-black">
+                  {totalQuantity}
+                </span>
+              )}
+            </Link>
+
+          </nav>
+
+          {/* Mobile Menu Button */}
+
+          <button
+            onClick={() => setMenuOpen(true)}
+            className="text-white md:hidden"
+          >
+            <Menu size={30} />
+          </button>
+
+        </div>
+      </header>
+
+      {/* Overlay */}
+
+      <div
+        className={`fixed inset-0 z-[100] transition-all duration-300 ${
+          menuOpen
+            ? "pointer-events-auto"
+            : "pointer-events-none"
+        }`}
+      >
+        <div
+          onClick={() => setMenuOpen(false)}
+          className={`absolute inset-0 bg-black/60 transition-opacity duration-300 ${
+            menuOpen
+              ? "opacity-100"
+              : "opacity-0"
+          }`}
         />
 
-        <nav className="flex gap-10 text-xs uppercase tracking-[0.3em]">
-          <a href="#" className="hover:text-zinc-400 transition">
-            Shop
-          </a>
+        {/* Side Menu */}
 
-          <a href="#" className="hover:text-zinc-400 transition">
-            Lookbook
-          </a>
+        <div
+          className={`absolute right-0 top-0 flex h-full w-[85%] max-w-sm flex-col bg-black text-white shadow-2xl transition-transform duration-500 ${
+            menuOpen
+              ? "translate-x-0"
+              : "translate-x-full"
+          }`}
+        >
+          {/* Header */}
 
-          <a href="#" className="hover:text-zinc-400 transition">
-            About
-          </a>
+          <div className="flex items-center justify-between border-b border-white/10 px-6 py-6">
 
-          <a href="#" className="hover:text-zinc-400 transition">
-            Contact
-          </a>
-        </nav>
+            <Image
+              src="/logo/logow.svg"
+              alt="NOISE"
+              width={120}
+              height={40}
+            />
+
+            <button
+              onClick={() => setMenuOpen(false)}
+              className="text-white transition duration-300 hover:rotate-90"
+            >
+              <X size={30} />
+            </button>
+
+          </div>
+
+          {/* Navigation */}
+
+          <nav className="flex flex-1 flex-col justify-center px-8">
+
+            <Link
+              href="/shop"
+              onClick={() => setMenuOpen(false)}
+              className="border-b border-white/10 py-6 text-2xl font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:pl-3"
+            >
+              Shop
+            </Link>
+
+            <a
+              href="#lookbook"
+              onClick={() => setMenuOpen(false)}
+              className="border-b border-white/10 py-6 text-2xl font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:pl-3"
+            >
+              Lookbook
+            </a>
+
+            <a
+              href="#about"
+              onClick={() => setMenuOpen(false)}
+              className="border-b border-white/10 py-6 text-2xl font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:pl-3"
+            >
+              About
+            </a>
+
+            <Link
+              href="/cart"
+              onClick={() => setMenuOpen(false)}
+              className="flex items-center justify-between border-b border-white/10 py-6 text-2xl font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:pl-3"
+            >
+              <span>Cart</span>
+
+              <span className="rounded-full bg-white px-3 py-1 text-sm font-bold text-black">
+                {totalQuantity}
+              </span>
+            </Link>
+
+          </nav>
+
+          {/* Footer */}
+
+          <div className="border-t border-white/10 px-8 py-8">
+
+            <p className="mb-4 text-xs uppercase tracking-[0.3em] text-zinc-500">
+              Follow
+            </p>
+
+            <div className="flex gap-6 text-sm uppercase tracking-[0.2em]">
+
+              <a
+                href="#"
+                className="transition hover:text-zinc-400"
+              >
+                Instagram
+              </a>
+
+              <a
+                href="#"
+                className="transition hover:text-zinc-400"
+              >
+                TikTok
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
-    </header>
+    </>
   );
 }

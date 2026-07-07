@@ -1,35 +1,34 @@
 import Image from "next/image";
+import FadeIn from "@/components/ui/FadeIn";
 
 export default function Campaign() {
   return (
-    <section className="relative h-screen overflow-hidden">
-      <Image
-        src="/images/campaign01.jpg"
-        alt="Campaign"
-        fill
-        priority
-        className="object-cover"
-      />
+    <FadeIn>
+      <section className="bg-black py-32 text-white">
+        <div className="mx-auto max-w-[1600px] px-10">
 
-      <div className="absolute inset-0 bg-black/45" />
+          <div className="mb-10">
+            <p className="text-xs uppercase tracking-[0.4em] text-zinc-500">
+              Campaign
+            </p>
 
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-6">
+            <h2 className="mt-4 text-5xl font-bold uppercase md:text-7xl">
+              Chaos Never Sleeps
+            </h2>
+          </div>
 
-        <p className="mb-5 text-sm uppercase tracking-[0.5em] text-zinc-300">
-          Campaign 2026
-        </p>
+          <div className="overflow-hidden rounded-sm">
+            <Image
+              src="/images/campaign01.jpg"
+              alt="Campaign"
+              width={1800}
+              height={1000}
+              className="h-auto w-full object-cover transition duration-700 hover:scale-[1.02]"
+            />
+          </div>
 
-        <h2 className="max-w-5xl text-5xl font-bold uppercase leading-tight md:text-8xl">
-          From Chaos,
-          <br />
-          Noise Rises.
-        </h2>
-
-        <button className="mt-12 border border-white px-10 py-4 text-xs uppercase tracking-[0.35em] transition duration-300 hover:bg-white hover:text-black">
-          Discover
-        </button>
-
-      </div>
-    </section>
+        </div>
+      </section>
+    </FadeIn>
   );
 }

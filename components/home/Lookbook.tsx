@@ -1,7 +1,9 @@
 import Image from "next/image";
+import FadeIn from "@/components/ui/FadeIn";
 
 export default function Lookbook() {
   return (
+   <FadeIn>
     <section className="bg-black py-32 text-white">
       <div className="mx-auto max-w-[1600px] px-10">
 
@@ -51,5 +53,6 @@ export default function Lookbook() {
 
       </div>
     </section>
+   </FadeIn> 
   );
 }
