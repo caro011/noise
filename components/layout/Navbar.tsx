@@ -108,7 +108,7 @@ export default function Navbar() {
 
           <button
             onClick={() => setMenuOpen(true)}
-            className="text-white md:hidden"
+            className="relative z-[60] text-white md:hidden"
           >
             <Menu size={30} />
           </button>

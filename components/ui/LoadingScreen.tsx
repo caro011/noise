@@ -27,7 +27,7 @@ export default function LoadingScreen() {
   return (
     <div
       className={`fixed inset-0 z-[9999] flex items-center justify-center bg-black transition-opacity duration-700 ${
-        hide ? "opacity-0" : "opacity-100"
+        hide ? "pointer-events-none opacity-0" : "opacity-100"
       }`}
     >
       <Image
