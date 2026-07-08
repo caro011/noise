@@ -9,6 +9,7 @@ import Toast from "@/components/ui/Toast";
 
 import SizeSelector from "./SizeSelector";
 import QuantitySelector from "./QuantitySelector";
+import SizeGuide from "./SizeGuide";
 
 type Props = {
   product: Product;
@@ -17,7 +18,9 @@ type Props = {
 export default function ProductInfo({ product }: Props) {
   const [selectedSize, setSelectedSize] = useState(product.sizes[0]);
   const [quantity, setQuantity] = useState(1);
+
   const [showToast, setShowToast] = useState(false);
+  const [showSizeGuide, setShowSizeGuide] = useState(false);
 
   const addItem = useCartStore((state) => state.addItem);
 
@@ -75,6 +78,22 @@ export default function ProductInfo({ product }: Props) {
           onSelect={setSelectedSize}
         />
 
+        <button
+          onClick={() => setShowSizeGuide(true)}
+          className="
+            mt-4
+            self-start
+            text-xs
+            uppercase
+            tracking-[0.25em]
+            text-zinc-500
+            transition
+            hover:text-white
+          "
+        >
+          View Size Guide
+        </button>
+
         <QuantitySelector
           quantity={quantity}
           onIncrease={() => setQuantity((prev) => prev + 1)}
@@ -85,12 +104,46 @@ export default function ProductInfo({ product }: Props) {
 
         <button
           onClick={handleAddToCart}
-          className="mt-8 h-14 w-full border border-white text-sm font-semibold uppercase tracking-[0.25em] transition hover:bg-white hover:text-black md:mt-10"
+          className="
+            mt-8
+            h-14
+            w-full
+            border
+            border-white
+            text-sm
+            font-semibold
+            uppercase
+            tracking-[0.25em]
+            transition
+            hover:bg-white
+            hover:text-black
+            md:mt-10
+          "
         >
           Add to Cart
         </button>
 
+        {/* TEST BUTTON */}
+
+        <button
+          onClick={() => alert("TEST BUTTON WORKS")}
+          className="
+            mt-4
+            h-14
+            w-full
+            bg-red-600
+            text-sm
+            font-bold
+            uppercase
+            tracking-[0.2em]
+            text-white
+          "
+        >
+          TEST BUTTON
+        </button>
+
         <div className="mt-12 border-t border-zinc-800 pt-8">
+
           <h3 className="mb-5 text-sm font-semibold uppercase tracking-[0.3em]">
             Details
           </h3>
@@ -102,9 +155,11 @@ export default function ProductInfo({ product }: Props) {
             <li>• Screen Printed Graphic</li>
             <li>• Made in Vietnam</li>
           </ul>
+
         </div>
 
         <div className="mt-10 border-t border-zinc-800 pt-8">
+
           <h3 className="mb-5 text-sm font-semibold uppercase tracking-[0.3em]">
             Shipping & Returns
           </h3>
@@ -116,9 +171,15 @@ export default function ProductInfo({ product }: Props) {
             <br />
             Returns accepted within 7 days after delivery.
           </p>
+
         </div>
 
       </div>
+
+      <SizeGuide
+        open={showSizeGuide}
+        onClose={() => setShowSizeGuide(false)}
+      />
 
       <Toast
         show={showToast}
