@@ -11,15 +11,17 @@ import { useCartStore } from "@/lib/store/cartStore";
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
 
   const items = useCartStore((state) => state.items);
 
-  const totalQuantity = items.reduce(
-    (total, item) => total + item.quantity,
-    0
-  );
+  const totalQuantity = hasMounted
+    ? items.reduce((total, item) => total + item.quantity, 0)
+    : 0;
 
   useEffect(() => {
+    setHasMounted(true);
+
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
