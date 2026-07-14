@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -18,7 +18,7 @@ type Order = {
   total: number;
 };
 
-export default function PaymentPage() {
+function PaymentContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -78,7 +78,6 @@ export default function PaymentPage() {
       <Navbar />
 
       <main className="min-h-screen bg-black px-5 pt-32 pb-24 text-white">
-
         <div className="mx-auto max-w-xl rounded-3xl border border-white/10 bg-zinc-950 p-8">
 
           <h1 className="text-center text-3xl font-bold uppercase">
@@ -90,7 +89,6 @@ export default function PaymentPage() {
           </p>
 
           <div className="mt-10 flex justify-center">
-
             <Image
               src={qr}
               alt="VietQR"
@@ -98,69 +96,44 @@ export default function PaymentPage() {
               height={320}
               unoptimized
             />
-
           </div>
 
           <div className="mt-10 space-y-4 rounded-2xl border border-white/10 p-6">
 
             <div className="flex justify-between">
-              <span className="text-zinc-500">
-                Mã đơn
-              </span>
-
+              <span className="text-zinc-500">Mã đơn</span>
               <span className="font-semibold">
                 {order.order_code}
               </span>
             </div>
 
             <div className="flex justify-between">
-              <span className="text-zinc-500">
-                Ngân hàng
-              </span>
-
-              <span>
-                {PAYMENT.bankName}
-              </span>
+              <span className="text-zinc-500">Ngân hàng</span>
+              <span>{PAYMENT.bankName}</span>
             </div>
 
             <div className="flex justify-between">
-              <span className="text-zinc-500">
-                Chủ tài khoản
-              </span>
-
-              <span>
-                {PAYMENT.accountName}
-              </span>
+              <span className="text-zinc-500">Chủ tài khoản</span>
+              <span>{PAYMENT.accountName}</span>
             </div>
 
             <div className="flex justify-between">
-              <span className="text-zinc-500">
-                Số tài khoản
-              </span>
-
-              <span>
-                {PAYMENT.accountNumber}
-              </span>
+              <span className="text-zinc-500">Số tài khoản</span>
+              <span>{PAYMENT.accountNumber}</span>
             </div>
 
             <div className="flex justify-between">
-              <span className="text-zinc-500">
-                Nội dung CK
-              </span>
-
+              <span className="text-zinc-500">Nội dung CK</span>
               <span className="font-semibold">
                 {order.order_code}
               </span>
             </div>
 
             <div className="flex justify-between border-t border-white/10 pt-5 text-xl font-bold">
-
               <span>Tổng tiền</span>
-
               <span>
                 {order.total.toLocaleString("vi-VN")}₫
               </span>
-
             </div>
 
           </div>
@@ -170,10 +143,27 @@ export default function PaymentPage() {
           </div>
 
         </div>
-
       </main>
 
       <Footer />
     </>
+  );
+}
+
+export default function PaymentPage() {
+  return (
+    <Suspense
+      fallback={
+        <>
+          <Navbar />
+          <main className="min-h-screen bg-black flex items-center justify-center text-white">
+            Đang tải...
+          </main>
+          <Footer />
+        </>
+      }
+    >
+      <PaymentContent />
+    </Suspense>
   );
 }
