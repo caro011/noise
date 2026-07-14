@@ -13,7 +13,7 @@ export type CreateOrderInput = {
   paymentMethod: "BANK_TRANSFER" | "COD";
 
   items: {
-    id: string;
+    id: number;
     name: string;
     size: string;
     quantity: number;
