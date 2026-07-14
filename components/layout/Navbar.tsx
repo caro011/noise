@@ -54,8 +54,6 @@ export default function Navbar() {
       >
         <div className="mx-auto flex max-w-[1600px] items-center justify-between px-5 py-5 md:px-8 lg:px-10 lg:py-6">
 
-          {/* Logo */}
-
           <Link href="/">
             <Image
               src="/logo/logow.svg"
@@ -63,10 +61,9 @@ export default function Navbar() {
               width={140}
               height={40}
               className="h-auto w-24 md:w-28"
+              priority
             />
           </Link>
-
-          {/* Desktop Navigation */}
 
           <nav className="hidden items-center gap-8 text-xs uppercase tracking-[0.3em] text-white md:flex">
 
@@ -74,7 +71,7 @@ export default function Navbar() {
               href="/shop"
               className="transition hover:text-zinc-400"
             >
-              Shop
+              Cửa hàng
             </Link>
 
             <a
@@ -88,7 +85,7 @@ export default function Navbar() {
               href="#about"
               className="transition hover:text-zinc-400"
             >
-              About
+              Giới thiệu
             </a>
 
             <Link
@@ -106,8 +103,6 @@ export default function Navbar() {
 
           </nav>
 
-          {/* Mobile Menu Button */}
-
           <button
             onClick={() => setMenuOpen(true)}
             className="relative z-[60] text-white md:hidden"
@@ -117,8 +112,6 @@ export default function Navbar() {
 
         </div>
       </header>
-
-      {/* Overlay */}
 
       <div
         className={`fixed inset-0 z-[100] transition-all duration-300 ${
@@ -136,8 +129,6 @@ export default function Navbar() {
           }`}
         />
 
-        {/* Side Menu */}
-
         <div
           className={`absolute right-0 top-0 flex h-full w-[85%] max-w-sm flex-col bg-black text-white shadow-2xl transition-transform duration-500 ${
             menuOpen
@@ -145,8 +136,6 @@ export default function Navbar() {
               : "translate-x-full"
           }`}
         >
-          {/* Header */}
-
           <div className="flex items-center justify-between border-b border-white/10 px-6 py-6">
 
             <Image
@@ -165,8 +154,6 @@ export default function Navbar() {
 
           </div>
 
-          {/* Navigation */}
-
           <nav className="flex flex-1 flex-col justify-center px-8">
 
             <Link
@@ -174,7 +161,7 @@ export default function Navbar() {
               onClick={() => setMenuOpen(false)}
               className="border-b border-white/10 py-6 text-2xl font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:pl-3"
             >
-              Shop
+              Cửa hàng
             </Link>
 
             <a
@@ -190,7 +177,7 @@ export default function Navbar() {
               onClick={() => setMenuOpen(false)}
               className="border-b border-white/10 py-6 text-2xl font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:pl-3"
             >
-              About
+              Giới thiệu
             </a>
 
             <Link
@@ -198,7 +185,7 @@ export default function Navbar() {
               onClick={() => setMenuOpen(false)}
               className="flex items-center justify-between border-b border-white/10 py-6 text-2xl font-semibold uppercase tracking-[0.2em] transition-all duration-300 hover:pl-3"
             >
-              <span>Cart</span>
+              <span>Giỏ hàng</span>
 
               <span className="rounded-full bg-white px-3 py-1 text-sm font-bold text-black">
                 {totalQuantity}
@@ -207,12 +194,10 @@ export default function Navbar() {
 
           </nav>
 
-          {/* Footer */}
-
           <div className="border-t border-white/10 px-8 py-8">
 
             <p className="mb-4 text-xs uppercase tracking-[0.3em] text-zinc-500">
-              Follow
+              Theo dõi
             </p>
 
             <div className="flex gap-6 text-sm uppercase tracking-[0.2em]">

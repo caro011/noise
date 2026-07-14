@@ -42,8 +42,9 @@ export default function Toast({
       `}
     >
       <div className="border-b border-white/10 px-5 py-4">
-        <p className="text-sm font-semibold text-white">
-          ✓ Added to Cart
+        <p className="flex items-center gap-2 text-sm font-semibold text-white">
+          <span className="text-green-400">✓</span>
+          Đã thêm vào giỏ hàng
         </p>
       </div>
 
@@ -64,7 +65,7 @@ export default function Toast({
           </h3>
 
           <p className="mt-2 text-sm text-zinc-400">
-            Size {size}
+            Kích thước: {size}
           </p>
 
           <p className="mt-3 font-semibold text-white">
@@ -81,7 +82,7 @@ export default function Toast({
           href="/cart"
           className="flex h-11 w-full items-center justify-center border border-white text-sm font-semibold uppercase tracking-[0.2em] transition hover:bg-white hover:text-black"
         >
-          View Cart
+          XEM GIỎ HÀNG
         </Link>
 
       </div>

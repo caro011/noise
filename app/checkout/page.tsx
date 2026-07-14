@@ -1,17 +1,60 @@
 "use client";
 
-import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
+import CheckoutForm from "@/components/checkout/CheckoutForm";
+import OrderSummary from "@/components/checkout/OrderSummary";
+import PaymentMethod from "@/components/checkout/PaymentMethod";
+
 import { useCartStore } from "@/lib/store/cartStore";
+import { createOrder } from "@/lib/supabase/order";
 
 export default function CheckoutPage() {
-  const items = useCartStore((state) => state.items);
+  const router = useRouter();
 
-  if (items.length === 0) {
-    redirect("/cart");
+  const items = useCartStore((state) => state.items);
+  const clearCart = useCartStore((state) => state.clearCart);
+
+  const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [paymentMethod, setPaymentMethod] = useState<
+    "BANK_TRANSFER" | "COD"
+  >("BANK_TRANSFER");
+
+  const [fullName, setFullName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+
+  const [province, setProvince] = useState("");
+  const [district, setDistrict] = useState("");
+  const [ward, setWard] = useState("");
+  const [address, setAddress] = useState("");
+
+  const [note, setNote] = useState("");
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    console.log("Checkout đang dùng API /api/orders");
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
+    if (items.length === 0) {
+      router.replace("/cart");
+    }
+  }, [mounted, items, router]);
+
+  if (!mounted) {
+    return null;
   }
 
   const subtotal = items.reduce(
@@ -19,153 +62,120 @@ export default function CheckoutPage() {
     0
   );
 
-  const shipping = 30000;
-  const total = subtotal + shipping;
+  const handlePlaceOrder = async () => {
+    if (loading) return;
+
+    if (
+      !fullName.trim() ||
+      !phone.trim() ||
+      !province.trim() ||
+      !district.trim() ||
+      !ward.trim() ||
+      !address.trim()
+    ) {
+      alert("Vui lòng nhập đầy đủ thông tin.");
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const order = await createOrder({
+        customerName: fullName,
+        phone,
+        email,
+
+        province,
+        district,
+        ward,
+        address,
+
+        note,
+
+        paymentMethod,
+
+        items,
+      });
+
+      if (email.trim()) {
+        try {
+          await fetch("/api/send-order-email", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email,
+              customerName: fullName,
+              orderCode: order.orderCode,
+              paymentMethod,
+            }),
+          });
+        } catch (e) {
+          console.error("Send mail error:", e);
+        }
+      }
+
+      clearCart();
+
+      if (order.paymentMethod === "BANK_TRANSFER") {
+        router.push(`/checkout/payment?id=${order.id}`);
+      } else {
+        router.push(`/order-success?code=${order.orderCode}`);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Không thể tạo đơn hàng.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
       <Navbar />
 
-      <main className="min-h-screen bg-black px-5 pb-20 pt-32 text-white md:px-8 lg:px-10 lg:pt-36">
-
-        <div className="mx-auto max-w-6xl">
-
-          <h1 className="mb-12 text-3xl font-bold uppercase md:text-5xl">
-            Checkout
+      <main className="min-h-screen bg-black px-5 pb-24 pt-32 text-white md:px-8 lg:px-10 lg:pt-36">
+        <div className="mx-auto max-w-7xl">
+          <h1 className="mb-14 text-3xl font-bold uppercase md:text-5xl">
+            Thanh toán
           </h1>
 
-          <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr]">
+          <div className="grid gap-14 lg:grid-cols-[1.6fr_1fr]">
+            <div>
+              <CheckoutForm
+                fullName={fullName}
+                setFullName={setFullName}
+                phone={phone}
+                setPhone={setPhone}
+                email={email}
+                setEmail={setEmail}
+                province={province}
+                setProvince={setProvince}
+                district={district}
+                setDistrict={setDistrict}
+                ward={ward}
+                setWard={setWard}
+                address={address}
+                setAddress={setAddress}
+                note={note}
+                setNote={setNote}
+              />
 
-            {/* Left */}
-
-            <div className="space-y-10">
-
-              <section>
-
-                <h2 className="mb-6 text-xl font-semibold uppercase">
-                  Contact
-                </h2>
-
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="h-14 w-full border border-white/10 bg-transparent px-4 outline-none focus:border-white"
-                />
-
-              </section>
-
-              <section>
-
-                <h2 className="mb-6 text-xl font-semibold uppercase">
-                  Shipping Address
-                </h2>
-
-                <div className="grid gap-4">
-
-                  <input
-                    placeholder="Full Name"
-                    className="h-14 border border-white/10 bg-transparent px-4 outline-none focus:border-white"
-                  />
-
-                  <input
-                    placeholder="Phone Number"
-                    className="h-14 border border-white/10 bg-transparent px-4 outline-none focus:border-white"
-                  />
-
-                  <input
-                    placeholder="Address"
-                    className="h-14 border border-white/10 bg-transparent px-4 outline-none focus:border-white"
-                  />
-
-                  <input
-                    placeholder="City"
-                    className="h-14 border border-white/10 bg-transparent px-4 outline-none focus:border-white"
-                  />
-
-                </div>
-
-              </section>
-
+              <PaymentMethod
+                value={paymentMethod}
+                onChange={setPaymentMethod}
+              />
             </div>
 
-            {/* Right */}
-
-            <div className="rounded-2xl border border-white/10 bg-zinc-950 p-6 lg:sticky lg:top-28">
-
-              <h2 className="mb-8 text-xl font-semibold uppercase">
-                Order Summary
-              </h2>
-
-              <div className="space-y-6">
-
-                {items.map((item) => (
-                  <div
-                    key={`${item.id}-${item.size}`}
-                    className="flex items-center justify-between border-b border-white/10 pb-4"
-                  >
-                    <div>
-
-                      <p className="font-medium">
-                        {item.name}
-                      </p>
-
-                      <p className="text-sm text-zinc-500">
-                        Size {item.size} × {item.quantity}
-                      </p>
-
-                    </div>
-
-                    <span>
-                      {(item.price * item.quantity).toLocaleString("vi-VN")}₫
-                    </span>
-
-                  </div>
-                ))}
-
-                <div className="flex justify-between">
-                  <span className="text-zinc-400">
-                    Subtotal
-                  </span>
-
-                  <span>
-                    {subtotal.toLocaleString("vi-VN")}₫
-                  </span>
-                </div>
-
-                <div className="flex justify-between">
-                  <span className="text-zinc-400">
-                    Shipping
-                  </span>
-
-                  <span>
-                    {shipping.toLocaleString("vi-VN")}₫
-                  </span>
-                </div>
-
-                <div className="flex justify-between border-t border-white/10 pt-6 text-lg font-semibold">
-
-                  <span>Total</span>
-
-                  <span>
-                    {total.toLocaleString("vi-VN")}₫
-                  </span>
-
-                </div>
-
-              </div>
-
-              <button
-                className="mt-10 h-14 w-full border border-white text-sm font-semibold uppercase tracking-[0.25em] transition hover:bg-white hover:text-black"
-              >
-                Place Order
-              </button>
-
-            </div>
-
+            <OrderSummary
+              items={items}
+              subtotal={subtotal}
+              loading={loading}
+              onPlaceOrder={handlePlaceOrder}
+            />
           </div>
-
         </div>
-
       </main>
 
       <Footer />

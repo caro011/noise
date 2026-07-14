@@ -25,13 +25,13 @@ export default function ShopToolbar({
   return (
     <section className="my-12 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
 
-      {/* Left */}
+      {/* Bên trái */}
 
       <div className="flex flex-col gap-5 lg:flex-row lg:items-center">
 
         <input
           type="text"
-          placeholder="Search..."
+          placeholder="Tìm kiếm sản phẩm..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="h-12 w-full border border-zinc-700 bg-transparent px-4 text-sm outline-none placeholder:text-zinc-600 lg:w-72"
@@ -54,7 +54,7 @@ export default function ShopToolbar({
 
       </div>
 
-      {/* Right */}
+      {/* Bên phải */}
 
       <select
         value={sort}
@@ -62,15 +62,15 @@ export default function ShopToolbar({
         className="h-12 border border-zinc-700 bg-black px-4 text-sm outline-none"
       >
         <option value="newest">
-          Newest
+          Mới nhất
         </option>
 
         <option value="low">
-          Price: Low to High
+          Giá: Thấp đến cao
         </option>
 
         <option value="high">
-          Price: High to Low
+          Giá: Cao đến thấp
         </option>
 
       </select>

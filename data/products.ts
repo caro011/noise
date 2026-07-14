@@ -30,17 +30,16 @@ export const products: Product[] = [
   {
     id: 1,
     sku: "NS-TEE-001",
-    slug: "chaos-tee",
+    slug: "tee-xuong",
 
-    name: "Chaos Tee",
+    name: "TEE XƯƠNG",
 
     category: "T-Shirt",
-    collection: "Chaos",
+    collection: "NOISE",
 
-    description:
-      "Built for the people who grew up surrounded by noise. Crafted from premium heavyweight cotton with a regular fit silhouette.",
+    description: "",
 
-    price: 890000,
+    price: 229000,
 
     stock: 20,
 
@@ -48,87 +47,85 @@ export const products: Product[] = [
     newArrival: true,
     bestSeller: true,
 
-    material: "100% Cotton",
+    material: "100% Cotton 2 chiều",
     gsm: 250,
     fit: "Regular Fit",
 
-    colors: ["Black"],
+    colors: ["Đen"],
 
     sizes: ["M", "L", "XL"],
 
     images: [
-      "/products/product01.jpg",
-      "/products/product02.jpg",
+      "/products/teexuong-01.png",
+      "/products/teexuong-02.png",
     ],
   },
 
   {
     id: 2,
     sku: "NS-TEE-002",
-    slug: "lost-kids-tee",
+    slug: "tee-child",
 
-    name: "Lost Kids Tee",
+    name: "TEE CHILD",
 
     category: "T-Shirt",
-    collection: "Lost Kids",
+    collection: "NOISE",
 
-    description:
-      "Premium heavyweight tee inspired by youth, memories and chaos.",
+    description: "",
 
-    price: 920000,
+    price: 229000,
 
-    stock: 18,
+    stock: 20,
 
     featured: true,
     newArrival: true,
     bestSeller: false,
 
-    material: "100% Cotton",
+    material: "100% Cotton 2 chiều",
     gsm: 250,
     fit: "Regular Fit",
 
-    colors: ["Black"],
+    colors: ["Đen"],
 
     sizes: ["M", "L", "XL"],
 
     images: [
-      "/products/product03.jpg",
-      "/products/product04.jpg",
+      "/products/teechild-01.png",
+      "/products/teechild-02.png",
     ],
   },
 
   {
     id: 3,
     sku: "NS-TEE-003",
-    slug: "noise-logo-tee",
+    slug: "tee-hoa",
 
-    name: "Noise Logo Tee",
+    name: "TEE HOA",
 
     category: "T-Shirt",
-    collection: "Core",
+    collection: "NOISE",
 
-    description:
-      "Essential NOISE logo tee made from premium heavyweight cotton.",
+    description: "",
 
-    price: 790000,
+    price: 229000,
 
-    stock: 25,
+    stock: 20,
 
-    featured: false,
+    featured: true,
     newArrival: true,
-    bestSeller: true,
+    bestSeller: false,
 
-    material: "100% Cotton",
+    material: "100% Cotton 2 chiều",
     gsm: 250,
     fit: "Regular Fit",
 
-    colors: ["Black"],
+    colors: ["Đen"],
 
     sizes: ["M", "L", "XL"],
 
     images: [
-      "/products/product05.jpg",
-      "/products/product06.jpg",
+      "/products/teehoa-01.png",
+      "/products/teehoa-02.png",
     ],
   },
 ];

@@ -54,23 +54,10 @@ export default function ProductInfo({ product }: Props) {
           {product.name}
         </h1>
 
-        <div className="mt-5 flex items-center gap-2">
-          <span className="text-base text-yellow-400 md:text-lg">
-            ★★★★★
-          </span>
-
-          <span className="text-xs text-zinc-500 md:text-sm">
-            (12 Reviews)
-          </span>
-        </div>
-
         <p className="mt-6 text-2xl font-semibold md:mt-8 md:text-3xl">
           {product.price.toLocaleString("vi-VN")}₫
         </p>
 
-        <p className="mt-6 text-sm leading-7 text-zinc-400 md:mt-8 md:text-base md:leading-8">
-          {product.description}
-        </p>
 
         <SizeSelector
           sizes={product.sizes}
@@ -91,7 +78,7 @@ export default function ProductInfo({ product }: Props) {
             hover:text-white
           "
         >
-          View Size Guide
+          XEM BẢNG KÍCH THƯỚC
         </button>
 
         <QuantitySelector
@@ -120,40 +107,21 @@ export default function ProductInfo({ product }: Props) {
             md:mt-10
           "
         >
-          Add to Cart
-        </button>
-
-        {/* TEST BUTTON */}
-
-        <button
-          onClick={() => alert("TEST BUTTON WORKS")}
-          className="
-            mt-4
-            h-14
-            w-full
-            bg-red-600
-            text-sm
-            font-bold
-            uppercase
-            tracking-[0.2em]
-            text-white
-          "
-        >
-          TEST BUTTON
+          THÊM VÀO GIỎ HÀNG
         </button>
 
         <div className="mt-12 border-t border-zinc-800 pt-8">
 
           <h3 className="mb-5 text-sm font-semibold uppercase tracking-[0.3em]">
-            Details
+            THÔNG TIN SẢN PHẨM
           </h3>
 
           <ul className="space-y-3 text-sm leading-7 text-zinc-500">
-            <li>• {product.material}</li>
-            <li>• {product.gsm} GSM</li>
-            <li>• {product.fit}</li>
-            <li>• Screen Printed Graphic</li>
-            <li>• Made in Vietnam</li>
+            <li>• Chất liệu: {product.material}</li>
+            <li>• Định lượng vải: {product.gsm} GSM</li>
+            <li>• Form áo: {product.fit}</li>
+            <li>• Công nghệ in: In lụa</li>
+            <li>• Sản xuất tại Việt Nam</li>
           </ul>
 
         </div>
@@ -161,16 +129,15 @@ export default function ProductInfo({ product }: Props) {
         <div className="mt-10 border-t border-zinc-800 pt-8">
 
           <h3 className="mb-5 text-sm font-semibold uppercase tracking-[0.3em]">
-            Shipping & Returns
+            CHÍNH SÁCH
           </h3>
 
-          <p className="text-sm leading-7 text-zinc-500">
-            Orders are processed within 1–3 business days.
-            <br />
-            Worldwide shipping available.
-            <br />
-            Returns accepted within 7 days after delivery.
-          </p>
+          <div className="space-y-3 text-sm leading-7 text-zinc-500">
+            <p>• Xử lý đơn hàng trong vòng 1–3 ngày làm việc.</p>
+            <p>• Giao hàng trên toàn quốc.</p>
+            <p>• Hỗ trợ đổi size trong vòng 7 ngày kể từ khi nhận hàng.</p>
+            <p>• Sản phẩm đổi phải còn nguyên tem và chưa qua sử dụng.</p>
+          </div>
 
         </div>
 
