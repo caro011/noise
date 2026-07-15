@@ -8,7 +8,6 @@ import Footer from "@/components/layout/Footer";
 
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import OrderSummary from "@/components/checkout/OrderSummary";
-import PaymentMethod from "@/components/checkout/PaymentMethod";
 
 import { useCartStore } from "@/lib/store/cartStore";
 import { createOrder } from "@/lib/supabase/order";
@@ -21,10 +20,6 @@ export default function CheckoutPage() {
 
   const [mounted, setMounted] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const [paymentMethod, setPaymentMethod] = useState<
-    "BANK_TRANSFER" | "COD"
-  >("BANK_TRANSFER");
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -42,10 +37,6 @@ export default function CheckoutPage() {
   }, []);
 
   useEffect(() => {
-    console.log("Checkout đang dùng API /api/orders");
-  }, []);
-
-  useEffect(() => {
     if (!mounted) return;
 
     if (items.length === 0) {
@@ -53,9 +44,7 @@ export default function CheckoutPage() {
     }
   }, [mounted, items, router]);
 
-  if (!mounted) {
-    return null;
-  }
+  if (!mounted) return null;
 
   const subtotal = items.reduce(
     (total, item) => total + item.price * item.quantity,
@@ -92,7 +81,7 @@ export default function CheckoutPage() {
 
         note,
 
-        paymentMethod,
+        paymentMethod: "COD",
 
         items,
       });
@@ -108,21 +97,17 @@ export default function CheckoutPage() {
               email,
               customerName: fullName,
               orderCode: order.orderCode,
-              paymentMethod,
+              paymentMethod: "COD",
             }),
           });
         } catch (e) {
-          console.error("Send mail error:", e);
+          console.error(e);
         }
       }
 
       clearCart();
 
-      if (order.paymentMethod === "BANK_TRANSFER") {
-        router.push(`/checkout/payment?id=${order.id}`);
-      } else {
-        router.push(`/order-success?code=${order.orderCode}`);
-      }
+      router.push(`/order-success?code=${order.orderCode}`);
     } catch (error) {
       console.error(error);
       alert("Không thể tạo đơn hàng.");
@@ -160,11 +145,6 @@ export default function CheckoutPage() {
                 setAddress={setAddress}
                 note={note}
                 setNote={setNote}
-              />
-
-              <PaymentMethod
-                value={paymentMethod}
-                onChange={setPaymentMethod}
               />
             </div>
 
